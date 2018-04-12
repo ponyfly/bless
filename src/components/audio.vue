@@ -1,9 +1,9 @@
 <template>
   <div class="audio-container">
-    <img class="audio-icon" src="../../static/images/audio-1@2x.png" alt="">
-    <img class="theme-temp" src="../../static/images/bg-temp1.png" alt="">
-    <img class="card-title" src="../../static/images/card-title@2x.png" alt="">
-    <img v-if="isStart" class="audio-start" src="../../static/images/audio-2@2x.png" alt="">
+    <img class="audio-icon" src="../../static/img/audio-1@2x.png" alt="">
+    <img class="theme-temp" src="../../static/img/bg-temp1.png" alt="">
+    <img class="card-title" src="../../static/img/card-title@2x.png" alt="">
+    <img v-if="isStart" class="audio-start" src="../../static/img/audio-2@2x.png" alt="" @touchstart="startRecord" @touchend="stopRecord">
     <div v-if="!isStart" class="audio-end">
       <div class="re-record common-circle">重录</div>
       <div class="audition common-circle">试听</div>
@@ -15,11 +15,23 @@
   export default {
     data() {
       return {
-        isStart: false
+        isStart: true,
+        recorderManager: null
       }
     },
     computed: {},
     methods: {
+      startRecord(){
+        console.log('start')
+        this.recorderManager.start()
+      },
+      stopRecord() {
+        console.log('stop')
+        this.recorderManager.stop()
+      }
+    },
+    created() {
+      this.recorderManager = wx.getRecorderManager()
     }
   }
 </script>

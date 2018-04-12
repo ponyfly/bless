@@ -1,9 +1,9 @@
 <template>
   <div class="photo-container">
-    <img class="theme-temp" src="../../static/images/photo-temp.png" alt="">
-    <img class="card-title" src="../../static/images/card-title@2x.png" alt="">
+    <img class="theme-temp" src="../../static/img/photo-temp.png" alt="">
+    <img class="card-title" src="../../static/img/card-title@2x.png" alt="">
     <div class="photo-common">
-      <img class="photo-bg" src="../../static/images/photo-01.png" alt="">
+      <img class="photo-bg" src="../../static/img/photo-01.png" alt="">
       <div class="upload-photo"></div>
     </div>
   </div>

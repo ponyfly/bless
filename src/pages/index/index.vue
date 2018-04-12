@@ -1,33 +1,33 @@
 <template>
   <div class="container">
-    <div class="themes" v-if="isHomeChecked">
+    <div class="themes" v-if="isHomeChecked" @click="goToWriteTheme">
       <div class="item-wrap">
-        <img class="theme-item" src="../../../static/images/theme-1@2x.png" alt="">
+        <img class="theme-item" src="../../../static/img/theme-1@2x.png" alt="">
       </div>
       <div class="item-wrap">
-        <img class="theme-item" src="../../../static/images/theme-2@2x.png" alt="">
+        <img class="theme-item" src="../../../static/img/theme-2@2x.png" alt="">
       </div>
       <div class="item-wrap">
-        <img class="theme-item" src="../../../static/images/theme-3@2x.png" alt="">
+        <img class="theme-item" src="../../../static/img/theme-3@2x.png" alt="">
       </div>
       <div class="item-wrap">
-        <img class="theme-item" src="../../../static/images/theme-4@2x.png" alt="">
+        <img class="theme-item" src="../../../static/img/theme-4@2x.png" alt="">
       </div>
       <div class="item-wrap">
-        <img class="theme-item" src="../../../static/images/theme-4@2x.png" alt="">
+        <img class="theme-item" src="../../../static/img/theme-4@2x.png" alt="">
       </div>
       <div class="item-wrap">
-        <img class="theme-item" src="../../../static/images/theme-4@2x.png" alt="">
+        <img class="theme-item" src="../../../static/img/theme-4@2x.png" alt="">
       </div>
       <div class="item-wrap">
-        <img class="theme-item" src="../../../static/images/theme-4@2x.png" alt="">
+        <img class="theme-item" src="../../../static/img/theme-4@2x.png" alt="">
       </div>
     </div>
     <div class="join-list" v-else>
       <div class="item-wrap">
         <div class="join-item">
           <div class="content">
-            <img class="bg-video" src="../../../static/images/bg-video.png" alt="">
+            <img class="bg-video" src="../../../static/img/bg-video.png" alt="">
           </div>
           <div class="theme-title">完末生日祝愿</div>
         </div>
@@ -35,7 +35,7 @@
       <div class="item-wrap">
         <div class="join-item">
           <div class="content">
-            <img class="bg-video" src="../../../static/images/bg-video.png" alt="">
+            <img class="bg-video" src="../../../static/img/bg-video.png" alt="">
           </div>
           <div class="theme-title">完末生日祝愿</div>
         </div>
@@ -43,7 +43,7 @@
       <div class="item-wrap">
         <div class="join-item">
           <div class="content">
-            <img class="bg-video" src="../../../static/images/bg-video.png" alt="">
+            <img class="bg-video" src="../../../static/img/bg-video.png" alt="">
           </div>
           <div class="theme-title">完末生日祝愿</div>
         </div>
@@ -51,7 +51,7 @@
       <div class="item-wrap">
         <div class="join-item">
           <div class="content">
-            <img class="bg-video" src="../../../static/images/bg-video.png" alt="">
+            <img class="bg-video" src="../../../static/img/bg-video.png" alt="">
           </div>
           <div class="theme-title">完末生日祝愿</div>
         </div>
@@ -59,14 +59,14 @@
       <div class="item-wrap">
         <div class="join-item">
           <div class="content">
-            <img class="bg-video" src="../../../static/images/bg-video.png" alt="">
+            <img class="bg-video" src="../../../static/img/bg-video.png" alt="">
           </div>
           <div class="theme-title">完末生日祝愿</div>
         </div>
       </div>
     </div>
     <div class="tabbar">
-      <img class="tabbar-bg" src="../../../static/images/bg-bottom@2x.png" alt="">
+      <img class="tabbar-bg" src="../../../static/img/bg-bottom@2x.png" alt="">
       <div class="tabbar-content" @click="switchTab">
         <div class="home" :class="isHomeChecked ? 'checked' : 'unchecked'" data-id="0"></div>
         <div class="myjoin" :class="isHomeChecked ? 'unchecked' : 'checked'" data-id="1"></div>
@@ -76,56 +76,60 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      motto: 'Hello World',
-      userInfo: {},
-      isHomeChecked: true
-    }
-  },
+  import store from '@/store/index'
+  import API from '@/api/index'
 
-  components: {
-  },
-
-  methods: {
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
-            }
-          })
-        }
-      })
-    },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
-    },
-    switchTab(e) {
-      const dataId = parseInt(e.target.dataset.id)
-      if(dataId === 0 && !this.isHomeChecked) {
-        this.isHomeChecked = true
-      } else if (dataId === 1 && this.isHomeChecked) {
-        this.isHomeChecked = false
+  export default {
+    data() {
+      return {
+        motto: 'Hello World',
+        userInfo: {},
+        isHomeChecked: true
       }
-    }
-  },
+    },
 
-  created () {
-    // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+    components: {},
+
+    methods: {
+      getUserInfo() {
+        return store.dispatch('getUserInfo')
+      },
+      goToWriteTheme() {
+        const userInfo = wx.getStorageSync('userInfo');
+        if (userInfo) {
+          store.commit('getUserInfo', userInfo)
+          wx.navigateTo({
+            url: '/pages/writetheme/main'
+          })
+          return
+        }
+        this.getUserInfo().then(() => {
+          wx.navigateTo({
+            url: '/pages/writetheme/main'
+          })
+        })
+      },
+      clickHandle(msg, ev) {
+        console.log('clickHandle:', msg, ev)
+      },
+      switchTab(e) {
+        const dataId = parseInt(e.target.dataset.id)
+        if (dataId === 0 && !this.isHomeChecked) {
+          this.isHomeChecked = true
+        } else if (dataId === 1 && this.isHomeChecked) {
+          this.isHomeChecked = false
+        }
+      }
+    },
+
+    created() {}
   }
-}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   .container
     width: 100%;
-    height: 100%;
-    background: url("../../../static/images/bg-home.png") repeat-y;
+    background: url("../../../static/img/bg-home.png") repeat-y;
     background-size: 100%;
     .themes
       display: flex;
@@ -196,19 +200,19 @@ export default {
           width:82rpx;
           height:64rpx;
           &.checked
-            background url("../../../static/images/checked-home@2x.png") no-repeat
+            background url("../../../static/img/checked-home@2x.png") no-repeat
             background-size cover
           &.unchecked
-            background url("../../../static/images/unchecked-home@2x.png") no-repeat
+            background url("../../../static/img/unchecked-home@2x.png") no-repeat
             background-position 2.5rpx 0
             background-size 76rpx 42rpx
         .myjoin
           width:149rpx;
           height:64rpx;
           &.checked
-            background url("../../../static/images/checked-myjoin@2x.png") no-repeat
+            background url("../../../static/img/checked-myjoin@2x.png") no-repeat
             background-size cover
           &.unchecked
-            background url("../../../static/images/unchecked-myjoin@2x.png") no-repeat
+            background url("../../../static/img/unchecked-myjoin@2x.png") no-repeat
             background-size 149rpx 43rpx
 </style>

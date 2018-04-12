@@ -1,19 +1,32 @@
 <template>
   <div class="word-container">
-    <img class="theme-temp" src="../../static/images/word-temp.png" alt="">
-    <img class="card-title" src="../../static/images/card-title@2x.png" alt="">
-    <textarea name="wishcontent" id="wisharea" cols="30" rows="10" maxlength="20" placeholder="输入你的祝福" wrap="hard"></textarea>
-    <div class="desc">（ 最多可输入 xx字 )</div>
+    <img class="theme-temp" src="../../static/img/word-temp.png" alt="">
+    <img class="card-title" src="../../static/img/card-title@2x.png" alt="">
+    <textarea name="wishcontent" id="wisharea" cols="30" rows="10" maxlength="200" placeholder="输入你的祝福" wrap="hard" v-model="wordContent"></textarea>
+    <div class="desc">（ 最多可输入200字 )</div>
   </div>
 </template>
 
 <script>
+  import store from '@/store/index'
+
   export default {
     data() {
-      return {}
+      return {
+        wordContent: ''
+      }
     },
     computed: {},
-    methods: {}
+    methods: {
+      setWord(val) {
+        store.commit('setCardContent', val)
+      }
+    },
+    watch: {
+      wordContent(newVal) {
+        this.setWord(newVal)
+      }
+    }
   }
 </script>
 

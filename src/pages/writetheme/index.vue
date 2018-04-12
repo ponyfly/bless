@@ -1,36 +1,53 @@
 <template>
   <div class="container">
     <div class="head">
-      <img src="../../../static/images/bg-head@2x.png" alt="" class="head-bg">
-      <img src="../../../static/images/cake@2x.png" alt="" class="cake">
+      <img src="../../../static/img/bg-head@2x.png" alt="" class="head-bg">
+      <div class="cake-wrap">
+        <img src="../../../static/img/icon-1@2x.png" alt="" class="cake-bg">
+        <img src="../../../static/img/cake@2x.png" alt="" class="cake">
+      </div>
     </div>
     <div class="content-wrap">
       <div class="content">
-        <img src="../../../static/images/card@2x.png" alt="" class="card-bg">
+        <img src="../../../static/img/card@2x.png" alt="" class="card-bg">
         <div class="card-desc">请填写祝福主题</div>
-        <input class="inputarea" type="text" placeholder="祝你生日快乐么么哒">
+        <input class="inputarea" type="text" placeholder="祝你生日快乐么么哒" v-model="wishTitle">
       </div>
     </div>
     <div class="submit-wrap">
-      <img class="submit-bg" src="../../../static/images/bg-bottom@2x.png" alt="">
+      <img class="submit-bg" src="../../../static/img/bg-bottom@2x.png" alt="">
       <div class="submit-content" @click="submitTheme">
-        <img src="../../../static/images/submit@2x.png" alt="" class="submit-icon">
+        <img src="../../../static/img/submit@2x.png" alt="" class="submit-icon">
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import store from '@/store/index'
+  import API from '@/api/index'
+
   export default {
     data() {
-      return {}
-    },
-    computed: {},
-    methods: {
-      submitTheme() {
-        console.log('submit')
+      return {
+        wishTitle: ''
       }
-    }
+    },
+    computed: {
+    },
+    methods: {
+      buildWish() {
+        return store.dispatch('buildWish', this.wishTitle)
+      },
+      submitTheme() {
+        this.buildWish().then(()=> {
+          wx.redirectTo({
+            url: '/pages/cardlist/main'
+          })
+        })
+      }
+    },
+    created() {}
   }
 </script>
 
@@ -38,7 +55,7 @@
   .container
     width: 100%;
     height: 100%;
-    background: url("../../../static/images/bg-home.png") repeat-y;
+    background: url("../../../static/img/bg-home.png") repeat-y;
     background-size: 100%;
     display flex
     flex-direction column
@@ -52,13 +69,26 @@
         height:100%
         position absolute
         z-index 1
-      .cake
-        width 170rpx
-        height 142rpx
+      .cake-wrap
+        width:126rpx;
+        height:96rpx;
         position absolute
         z-index 2
-        left 295rpx
-        top 45rpx
+        left 313rpx
+        top 63rpx
+        display flex
+        justify-content center
+        align-items center
+        .cake-bg
+          width 100%
+          height 100%
+          position: absolute
+        .cake
+          width:51rpx
+          height:59rpx
+          position: relative
+          z-index 3
+          top:-5rpx
     .content-wrap
       flex:1
       display flex

@@ -1,13 +1,13 @@
 <template>
   <div class="card-container">
     <div class="head">
-      <img src="../../static/images/bg-04.png" alt="" class="head-bg">
+      <img src="../../static/img/bg-04.png" alt="" class="head-bg">
       <div class="creater">
-        <img src="../../static/images/star@2x.png" alt="" class="star">
+        <img src="../../static/img/star@2x.png" alt="" class="star">
         <div class="content">
           本次祝福由<span class="creater-name">默默</span>发起
         </div>
-        <img src="../../static/images/star@2x.png" alt="" class="star">
+        <img src="../../static/img/star@2x.png" alt="" class="star">
       </div>
     </div>
     <div class="content-wrap">
@@ -15,20 +15,27 @@
       <div class="common-bg bg-2"></div>
       <div class="common-bg bg-3"></div>
       <div class="common-bg bg-4">
-        <typeword></typeword>
+        <!--<typeword v-if="type==1"></typeword>
+        <typeaudio v-if="type==2"></typeaudio>
+        <typevideo v-if="type==3"></typevideo>
+        <typeimage v-if="type==4"></typeimage>-->
+        <typeaudio></typeaudio>
       </div>
     </div>
     <div class="bottom">
-      <img src="../../static/images/bg-03.png" class="bg-bottom">
+      <img src="../../static/img/bg-03.png" class="bg-bottom">
       <div class="form-area">
-        <img src="../../static/images/cancel@2x.png" alt="" class="form-btn cancel">
-        <img :src="isAfterWirte ? '../../static/images/confirm-2@2x.png' : '../../static/images/confirm@2x.png'" alt="" class="form-btn confirm">
+        <img src="../../static/img/cancel@2x.png" alt="" class="form-btn cancel">
+        <img :src="isAfterWirte ? '../../static/img/confirm-2@2x.png' : '../../static/img/confirm@2x.png'" alt="" class="form-btn confirm" @click="uploadContent">
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import store from '@/store/index'
+  import API from '@/api/index'
+
   import TypeAudio from '@/components/audio.vue'
   import TypeVideo from '@/components/video.vue'
   import TypeImage from '@/components/image.vue'
@@ -37,7 +44,7 @@
     props:['type'],
     data() {
       return {
-        isAfterWirte:true
+        isAfterWirte:false
       }
     },
     components: {
@@ -46,6 +53,42 @@
       typeimage: TypeImage,
       typeword: TypeWord
     },
+    computed: {
+    },
+    created(){
+    },
+    //setCardContent
+    methods: {
+      buildCard(config) {
+        wx.request({
+          url: API.buildCard,
+          method: 'POST',
+          data: config,
+          success: res => {
+
+          }
+        })
+      },
+      uploadContent() {
+//        const type = parseInt(this.type)
+        const type = 1
+        let config = {}
+        switch (type) {
+          case 1:
+            config = {
+              openId: store.state.openId,
+              owerHeadPic: store.state.userInfo.avatarUrl,
+              ownerName: store.state.userInfo.nickName,
+              wishTemplateId: '',
+              wishText: store.state.cardContent.typeWord,
+              wishType: 'text',
+              wishUrl: '',
+              wishid: ''
+            }
+            this.buildCard(config)
+        }
+      }
+    }
   }
 </script>
 

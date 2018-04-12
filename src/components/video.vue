@@ -1,9 +1,9 @@
 <template>
   <div class="video-container">
-    <img class="theme-temp" src="../../static/images/video-temp.png" alt="">
-    <img class="card-title" src="../../static/images/card-title@2x.png" alt="">
+    <img class="theme-temp" src="../../static/img/video-temp.png" alt="">
+    <img class="card-title" src="../../static/img/card-title@2x.png" alt="">
     <div class="video-common">
-      <img class="video-bg" src="../../static/images/video-01.png" alt="">
+      <img class="video-bg" src="../../static/img/video-01.png" alt="">
       <div class="upload-video"></div>
     </div>
   </div>

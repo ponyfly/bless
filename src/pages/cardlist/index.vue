@@ -2,17 +2,20 @@
   <div class="container">
     <div class="list-wrap" v-if="!isShowWrite">
       <div class="head">
-        <img src="../../../static/images/bg-head@2x.png" alt="" class="head-bg">
+        <img src="../../../static/img/bg-head@2x.png" alt="" class="head-bg">
         <div class="creater">
-          <img src="../../../static/images/star@2x.png" alt="" class="star">
+          <img src="../../../static/img/star@2x.png" alt="" class="star">
           <div class="content">
             本次祝福由<span class="creater-name">默默</span>发起
           </div>
-          <img src="../../../static/images/star@2x.png" alt="" class="star">
+          <img src="../../../static/img/star@2x.png" alt="" class="star">
         </div>
         <div class="cards-num">
-          <img src="../../../static/images/icon-1@2x.png" alt="" class="num-bg">
-          <div class="num">6/365</div>
+          <img src="../../../static/img/icon-1@2x.png" alt="" class="num-bg">
+          <div class="num">
+            <div class="num-title">祝福数</div>
+            <div class="bum-content">6/365</div>
+          </div>
         </div>
       </div>
       <div class="content-wrap">
@@ -26,60 +29,60 @@
         <div class="joiner-container">
           <scroll-view scroll-x class="scroll-content">
             <div class="scroll-item">
-              <img src="../../../static/images/joiner@2x.png" alt="" class="joiner-pic">
+              <img src="../../../static/img/joiner@2x.png" alt="" class="joiner-pic">
               <div class="joiner-name">小乔</div>
             </div>
             <div class="scroll-item">
-              <img src="../../../static/images/joiner@2x.png" alt="" class="joiner-pic">
+              <img src="../../../static/img/joiner@2x.png" alt="" class="joiner-pic">
               <div class="joiner-name">小乔</div>
             </div>
             <div class="scroll-item">
-              <img src="../../../static/images/joiner@2x.png" alt="" class="joiner-pic">
+              <img src="../../../static/img/joiner@2x.png" alt="" class="joiner-pic">
               <div class="joiner-name">小乔</div>
             </div>
             <div class="scroll-item">
-              <img src="../../../static/images/joiner@2x.png" alt="" class="joiner-pic">
+              <img src="../../../static/img/joiner@2x.png" alt="" class="joiner-pic">
               <div class="joiner-name">小乔</div>
             </div>
             <div class="scroll-item">
-              <img src="../../../static/images/joiner@2x.png" alt="" class="joiner-pic">
+              <img src="../../../static/img/joiner@2x.png" alt="" class="joiner-pic">
               <div class="joiner-name">小乔</div>
             </div>
             <div class="scroll-item">
-              <img src="../../../static/images/joiner@2x.png" alt="" class="joiner-pic">
+              <img src="../../../static/img/joiner@2x.png" alt="" class="joiner-pic">
               <div class="joiner-name">小乔</div>
             </div>
             <div class="scroll-item">
-              <img src="../../../static/images/joiner@2x.png" alt="" class="joiner-pic">
+              <img src="../../../static/img/joiner@2x.png" alt="" class="joiner-pic">
               <div class="joiner-name">小乔</div>
             </div>
             <div class="scroll-item">
-              <img src="../../../static/images/joiner@2x.png" alt="" class="joiner-pic">
+              <img src="../../../static/img/joiner@2x.png" alt="" class="joiner-pic">
               <div class="joiner-name">小乔</div>
             </div>
             <div class="scroll-item">
-              <img src="../../../static/images/joiner@2x.png" alt="" class="joiner-pic">
+              <img src="../../../static/img/joiner@2x.png" alt="" class="joiner-pic">
               <div class="joiner-name">小乔</div>
             </div>
           </scroll-view>
         </div>
       </div>
       <div class="submit-wrap">
-        <img class="submit-bg" src="../../../static/images/bg-bottom2@2x.png" alt="">
+        <img class="submit-bg" src="../../../static/img/bg-bottom2@2x.png" alt="">
         <div class="submit-content">
-          <img src="../../../static/images/create.png" alt="" class="create-wish">
-          <img src="../../../static/images/join-wish@2x.png" alt="" class="submit-icon" @click="submitTheme">
-          <img src="../../../static/images/share.png" alt="" class="share-wish">
+          <img src="../../../static/img/create.png" alt="" class="create-wish" @click="createWish">
+          <img src="../../../static/img/join-wish@2x.png" alt="" class="submit-icon" @click="joinWish">
+          <img src="../../../static/img/share.png" alt="" class="share-wish" @click="shareWish">
         </div>
       </div>
       <div class="wish-type" v-if="isShowType">
         <div class="type-wrap">
           <div class="type-title">选择祝福类型</div>
           <div class="type-list" @click="toWriteWish">
-            <img id="1" src="../../../static/images/wishtype-1@2x.png" class="type-item">
-            <img id="2" src="../../../static/images/wishtype-2@2x.png" class="type-item">
-            <img id="3" src="../../../static/images/wishtype-3@2x.png" class="type-item">
-            <img id="4" src="../../../static/images/wishtype-4@2x.png" class="type-item">
+            <img id="1" src="../../../static/img/wishtype-1@2x.png" class="type-item">
+            <img id="2" src="../../../static/img/wishtype-2@2x.png" class="type-item">
+            <img id="3" src="../../../static/img/wishtype-3@2x.png" class="type-item">
+            <img id="4" src="../../../static/img/wishtype-4@2x.png" class="type-item">
           </div>
         </div>
       </div>
@@ -97,7 +100,7 @@
         bannerIndex: 4,
         bannerList: [1,2,3,4,5,6,7,8,9],
         indexPositoin: 50,
-        isShowType: true,
+        isShowType: false,
         isShowWrite: true,
         curCardType: 0,
       }
@@ -107,8 +110,13 @@
     },
     computed: {},
     methods: {
-      submitTheme() {
-        console.log('submit')
+      joinWish() {
+        this.isShowType = true
+      },
+      createWish() {
+        this.isShowType = true
+      },
+      shareWish() {
       },
       nextIndex() {
         if(this.bannerIndex < this.bannerList.length-1){
@@ -128,6 +136,10 @@
         this.isShowWrite = true
         this.curCardType = e.target.id
       }
+    },
+    onUnload(){
+      this.isShowType = false
+      this.isShowWrite = false
     }
   }
 </script>
@@ -139,7 +151,7 @@
     .list-wrap
       width: 100%;
       height: 100%;
-      background: url("../../../static/images/bg-home.png") repeat-y;
+      background: url("../../../static/img/bg-home.png") repeat-y;
       background-size: 100%;
       display flex
       flex-direction column
@@ -186,11 +198,14 @@
             width:100%
             height: 100%
             display flex
+            flex-direction column
             justify-content center
             align-items: center
             color: #fff
             padding-bottom 16rpx
             box-sizing border-box
+            .num-title
+              font-size 20rpx
       .content-wrap
         flex:1
         display flex
