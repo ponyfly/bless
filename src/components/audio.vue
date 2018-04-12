@@ -28,10 +28,18 @@
       stopRecord() {
         console.log('stop')
         this.recorderManager.stop()
+      },
+      stopHandler() {
+
       }
     },
     created() {
       this.recorderManager = wx.getRecorderManager()
+      console.log(this.recorderManager)
+      this.recorderManager.onStop((res) => {
+        console.log('recorder stop', res)
+        const { tempFilePath } = res
+      })
     }
   }
 </script>
