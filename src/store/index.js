@@ -17,9 +17,7 @@ const store = new Vuex.Store({
       wishTemplateId: '',
       wishThemeImgUrl: ''
     },
-    cardContent: {
-      typeWord: ''
-    }
+    innerAudioContext: null
   },
   mutations: {
     setOpenId(state, openId) {
@@ -37,8 +35,8 @@ const store = new Vuex.Store({
       state.wish.wishTemplateId = data.wishTemplateId
       state.wish.wishThemeImgUrl = data.wishThemeImgUrl
     },
-    setCardContent(state, data) {
-      state.cardContent.typeWord = data
+    createInnerAudioContext(state) {
+      state.innerAudioContext = wx.createInnerAudioContext()
     }
   },
   getters: {

@@ -5,41 +5,73 @@
     <img class="card-title" src="../../static/img/card-title@2x.png" alt="">
     <img v-if="isStart" class="audio-start" src="../../static/img/audio-2@2x.png" alt="" @touchstart="startRecord" @touchend="stopRecord">
     <div v-if="!isStart" class="audio-end">
-      <div class="re-record common-circle">重录</div>
-      <div class="audition common-circle">试听</div>
+      <div class="re-record common-circle" @click="reRecord">重录</div>
+      <div class="audition common-circle" @click="tryListen">试听</div>
     </div>
   </div>
 </template>
 
 <script>
+  import store from '@/store/index'
+
   export default {
+    props: ['isAfterWirte'],
     data() {
       return {
         isStart: true,
-        recorderManager: null
+        recorderManager: null,
+        tempFilePath: ''
       }
     },
-    computed: {},
+    computed: {
+      innerAudioContext() {
+        return store.state.innerAudioContext
+      }
+    },
     methods: {
       startRecord(){
-        console.log('start')
         this.recorderManager.start()
       },
       stopRecord() {
-        console.log('stop')
         this.recorderManager.stop()
       },
-      stopHandler() {
-
+      reRecord() {
+        this.isStart = true
+        this.$emit('update:isAfterWirte', false)
+        this.innerAudioContext.stop()
+      },
+      tryListen() {
+        this.innerAudioContext.src = this.tempFilePath
+        this.innerAudioContext.play()
+      },
+      initRecorderManager() {
+        this.recorderManager = wx.getRecorderManager()
+        this.recorderManager.onStop((res) => {
+          this.tempFilePath = res.tempFilePath
+          this.$emit('getTempFilePath', this.tempFilePath)
+          this.isStart = false
+          this.$emit('update:isAfterWirte', true)
+        })
+        this.recorderManager.onError(function(){
+          wx.showToast({
+            title: '录音失败'
+          })
+        });
+      },
+      initAudioContextEvent() {
+        this.innerAudioContext.onPlay(() => {
+          console.log(this.innerAudioContext.src)
+        })
+        this.innerAudioContext.onError(() => {
+          wx.showToast({
+            title: '播放失败'
+          })
+        })
       }
     },
     created() {
-      this.recorderManager = wx.getRecorderManager()
-      console.log(this.recorderManager)
-      this.recorderManager.onStop((res) => {
-        console.log('recorder stop', res)
-        const { tempFilePath } = res
-      })
+      this.initRecorderManager()
+      this.initAudioContextEvent()
     }
   }
 </script>
@@ -78,6 +110,7 @@
       width: 100%
       height:164rpx
       position: absolute
+      z-index 3
       top:715rpx
       display flex
       justify-content center

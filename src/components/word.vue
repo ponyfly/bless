@@ -17,14 +17,10 @@
       }
     },
     computed: {},
-    methods: {
-      setWord(val) {
-        store.commit('setCardContent', val)
-      }
-    },
+    methods: {},
     watch: {
       wordContent(newVal) {
-        this.setWord(newVal)
+        this.$emit('getTypeWord', newVal)
       }
     }
   }

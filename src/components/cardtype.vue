@@ -19,7 +19,8 @@
         <typeaudio v-if="type==2"></typeaudio>
         <typevideo v-if="type==3"></typevideo>
         <typeimage v-if="type==4"></typeimage>-->
-        <typeaudio></typeaudio>
+        <!--<typeaudio @getTempFilePath="getTempFilePath" :isAfterWirte.sync="isAfterWirte"></typeaudio>-->
+        <typeword @getTypeWord="getTypeWord"></typeword>
       </div>
     </div>
     <div class="bottom">
@@ -44,7 +45,9 @@
     props:['type'],
     data() {
       return {
-        isAfterWirte:false
+        isAfterWirte:false,
+        tempFilePath: '',
+        tempWord: ''
       }
     },
     components: {
@@ -59,6 +62,12 @@
     },
     //setCardContent
     methods: {
+      getTempFilePath(path) {
+        this.tempFilePath = path
+      },
+      getTypeWord(word) {
+        this.tempWord = word
+      },
       buildCard(config) {
         wx.request({
           url: API.buildCard,
@@ -80,7 +89,7 @@
               owerHeadPic: store.state.userInfo.avatarUrl,
               ownerName: store.state.userInfo.nickName,
               wishTemplateId: '',
-              wishText: store.state.cardContent.typeWord,
+              wishText: this.tempWord,
               wishType: 'text',
               wishUrl: '',
               wishid: ''

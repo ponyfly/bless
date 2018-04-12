@@ -5,6 +5,7 @@
   export default {
     created() {
       this.getOpenId()
+      this.createInnerAudioContext()
     },
     methods: {
       getOpenId() {
@@ -29,6 +30,9 @@
             })
           }
         })
+      },
+      createInnerAudioContext() {
+        store.commit('createInnerAudioContext')
       }
     }
   }
