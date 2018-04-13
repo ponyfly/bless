@@ -1,26 +1,8 @@
 <template>
   <div class="container">
     <div class="themes" v-if="isHomeChecked" @click="goToWriteTheme">
-      <div class="item-wrap">
-        <img class="theme-item" src="../../../static/img/theme-1@2x.png" alt="">
-      </div>
-      <div class="item-wrap">
-        <img class="theme-item" src="../../../static/img/theme-2@2x.png" alt="">
-      </div>
-      <div class="item-wrap">
-        <img class="theme-item" src="../../../static/img/theme-3@2x.png" alt="">
-      </div>
-      <div class="item-wrap">
-        <img class="theme-item" src="../../../static/img/theme-4@2x.png" alt="">
-      </div>
-      <div class="item-wrap">
-        <img class="theme-item" src="../../../static/img/theme-4@2x.png" alt="">
-      </div>
-      <div class="item-wrap">
-        <img class="theme-item" src="../../../static/img/theme-4@2x.png" alt="">
-      </div>
-      <div class="item-wrap">
-        <img class="theme-item" src="../../../static/img/theme-4@2x.png" alt="">
+      <div class="item-wrap" v-for="item in wishTemplates" :key="item.wishTemplateId">
+        <img class="theme-item" :src="item.wishCoverUrl" :data-id="item.wishTemplateId" alt="">
       </div>
     </div>
     <div class="join-list" v-else>
@@ -82,9 +64,13 @@
   export default {
     data() {
       return {
-        motto: 'Hello World',
-        userInfo: {},
         isHomeChecked: true
+      }
+    },
+
+    computed: {
+      wishTemplates() {
+        return store.state.wishTemplates
       }
     },
 
@@ -94,23 +80,29 @@
       getUserInfo() {
         return store.dispatch('getUserInfo')
       },
-      goToWriteTheme() {
-        const userInfo = wx.getStorageSync('userInfo');
-        if (userInfo) {
-          store.commit('getUserInfo', userInfo)
-          wx.navigateTo({
-            url: '/pages/writetheme/main'
+      goToWriteTheme(e) {
+        if (e.target.dataset.id) {
+
+          store.commit('getCurWishTempId', e.target.dataset.id)
+          store.dispatch('getWishTempletCss')
+
+          const userInfo = wx.getStorageSync('userInfo');
+          if (userInfo) {
+            store.commit('getUserInfo', userInfo)
+            wx.navigateTo({
+              url: '/pages/writetheme/main'
+            })
+            return
+          }
+          this.getUserInfo().then(() => {
+            wx.navigateTo({
+              url: '/pages/writetheme/main'
+            })
           })
-          return
         }
-        this.getUserInfo().then(() => {
-          wx.navigateTo({
-            url: '/pages/writetheme/main'
-          })
-        })
       },
-      clickHandle(msg, ev) {
-        console.log('clickHandle:', msg, ev)
+      getMyWishes() {
+        store.dispatch('getMyWishes')
       },
       switchTab(e) {
         const dataId = parseInt(e.target.dataset.id)
@@ -118,11 +110,15 @@
           this.isHomeChecked = true
         } else if (dataId === 1 && this.isHomeChecked) {
           this.isHomeChecked = false
+          this.getMyWishes()
         }
-      }
+      },
+
     },
 
-    created() {}
+    created() {
+      store.dispatch('getWishTemplets')
+    }
   }
 </script>
 
@@ -131,10 +127,13 @@
     width: 100%;
     background: url("../../../static/img/bg-home.png") repeat-y;
     background-size: 100%;
+    height:100%
+    overflow-y scroll
     .themes
       display: flex;
       flex-wrap: wrap;
       justify-content:flex-start;
+      align-content flex-start
       .item-wrap
         flex:0 0 50%
         display flex
@@ -143,11 +142,13 @@
           width: 320rpx;
           height: 460rpx;
           margin: 30rpx 0 20rpx;
+          border-radius 12rpx
           box-shadow: 6rpx 2rpx 10rpx 4rpx rgba(0, 0, 0, .4)
     .join-list
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
+      align-content flex-start
       .item-wrap
         flex:0 0 50%
         display flex

@@ -20,7 +20,9 @@
         <typevideo v-if="type==3"></typevideo>
         <typeimage v-if="type==4"></typeimage>-->
         <!--<typeaudio @getTempFilePath="getTempFilePath" :isAfterWirte.sync="isAfterWirte"></typeaudio>-->
-        <typeword @getTypeWord="getTypeWord"></typeword>
+        <!--<typeword @getTypeWord="getTypeWord"></typeword>-->
+        <!--<typevideo></typevideo>-->
+        <typeword></typeword>
       </div>
     </div>
     <div class="bottom">
@@ -36,6 +38,7 @@
 <script>
   import store from '@/store/index'
   import API from '@/api/index'
+  import {fileUpload} from '@/utils/index'
 
   import TypeAudio from '@/components/audio.vue'
   import TypeVideo from '@/components/video.vue'
@@ -74,14 +77,16 @@
           method: 'POST',
           data: config,
           success: res => {
-
+            console.log(res)
           }
         })
       },
       uploadContent() {
-//        const type = parseInt(this.type)
-        const type = 1
         let config = {}
+        const d = this
+//        const type = parseInt(this.type)
+        /*const type = 1
+
         switch (type) {
           case 1:
             config = {
@@ -95,7 +100,26 @@
               wishid: ''
             }
             this.buildCard(config)
-        }
+        }*/
+        fileUpload(this.tempFilePath, {
+          keys:'',
+          mimeType:'audio',
+          suffixes:'mp3'
+        }, function(data){
+          config = {
+            openId: store.state.openId,
+            owerHeadPic: store.state.userInfo.avatarUrl,
+            ownerName: store.state.userInfo.nickName,
+            wishTemplateId: '',
+            wishText: '',
+            wishType: 'text',
+            wishUrl: data.resUrl,
+            wishid: ''
+          }
+          d.buildCard(config)
+        }, function(err) {
+          console.log('method.js chooseVideoFromLocal err', err)
+        })
       }
     }
   }

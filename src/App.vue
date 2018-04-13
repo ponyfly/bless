@@ -4,33 +4,9 @@
 
   export default {
     created() {
-      this.getOpenId()
       this.createInnerAudioContext()
     },
     methods: {
-      getOpenId() {
-        const openId = wx.getStorageSync('openId');
-        if (openId) {
-          store.commit('setOpenId', openId)
-        }
-        wx.login({
-          success: function (res) {
-            const code = res.code
-            wx.request({
-              url: API.getOpenId,
-              method: 'POST',
-              data: {
-                appId: 'wx6b61571b20b0c664',
-                jsCode: code
-              },
-              success: res => {
-                store.commit('setOpenId', res.data.opendId)
-                wx.setStorageSync('opendId', res.data.opendId)
-              }
-            })
-          }
-        })
-      },
       createInnerAudioContext() {
         store.commit('createInnerAudioContext')
       }

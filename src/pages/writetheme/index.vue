@@ -42,7 +42,7 @@
       submitTheme() {
         this.buildWish().then(()=> {
           wx.redirectTo({
-            url: '/pages/cardlist/main'
+            url: '/pages/cardlist/main?wishId=' + store.state.wish.wishId
           })
         })
       }

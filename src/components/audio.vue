@@ -30,7 +30,9 @@
     },
     methods: {
       startRecord(){
-        this.recorderManager.start()
+        this.recorderManager.start({
+          format: 'mp3',
+        })
       },
       stopRecord() {
         this.recorderManager.stop()
@@ -52,9 +54,10 @@
           this.isStart = false
           this.$emit('update:isAfterWirte', true)
         })
-        this.recorderManager.onError(function(){
+        this.recorderManager.onError(() => {
           wx.showToast({
-            title: '录音失败'
+            title: '录音失败',
+            icon: 'none',
           })
         });
       },
@@ -81,6 +84,8 @@
     width:100%
     height: 100%
     position: relative
+    display flex
+    flex-direction column
     .theme-temp
       position: absolute
       width:100%
@@ -88,7 +93,7 @@
       z-index 2
     .audio-icon
       position: absolute
-      top: 326rpx
+      top: 36%
       left: 66rpx
       width: 584rpx
       height: 342rpx
@@ -97,12 +102,13 @@
       width: 414rpx
       height:43rpx
       position: absolute
-      top:246rpx
-      left:191rpx
+      top:27%
+      left:50%
+      transform translateX(-50%)
     .audio-start
       position: absolute
       left: 276rpx
-      top: 715rpx
+      bottom 9%
       width:164rpx
       height:164rpx
       z-index 3
@@ -111,7 +117,7 @@
       height:164rpx
       position: absolute
       z-index 3
-      top:715rpx
+      bottom 9%
       display flex
       justify-content center
       align-items center

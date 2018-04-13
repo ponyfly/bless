@@ -19,11 +19,12 @@
         </div>
       </div>
       <div class="content-wrap">
-        <div class="stage">
-          <div class="banner">
-            <div v-for="item in bannerList" :key="item" class="banner-item" :class="item == bannerIndex ? 'banner-item-act': item > bannerIndex ? 'banner-item-right' : 'banner-item-left'" :index="item">{{item}}</div>
-          </div>
-        </div>
+        <!--<div class="stage">-->
+          <!--<div class="banner">-->
+            <!--<div v-for="item in bannerList" :key="item" class="banner-item" :class="item == bannerIndex ? 'banner-item-act': item > bannerIndex ? 'banner-item-right' : 'banner-item-left'" :index="item">{{item}}</div>-->
+          <!--</div>-->
+        <!--</div>-->
+        <scroll></scroll>
         <button @click="preIndex">上一个</button>
         <button @click="nextIndex">下一个</button>
         <div class="joiner-container">
@@ -92,7 +93,9 @@
 </template>
 
 <script>
+  import store from '@/store/index'
   import CardType from '@/components/cardtype.vue'
+  import scroll from '@/components/scroll.vue'
 
   export default {
     data() {
@@ -101,12 +104,13 @@
         bannerList: [1,2,3,4,5,6,7,8,9],
         indexPositoin: 50,
         isShowType: false,
-        isShowWrite: true,
+        isShowWrite: false,
         curCardType: 0,
       }
     },
     components: {
-      cardtype: CardType
+      cardtype: CardType,
+      scroll
     },
     computed: {},
     methods: {
@@ -135,11 +139,14 @@
       toWriteWish(e) {
         this.isShowWrite = true
         this.curCardType = e.target.id
-      }
+      },
     },
     onUnload(){
       this.isShowType = false
       this.isShowWrite = false
+    },
+    onLoad(opts) {
+      console.log(opts)
     }
   }
 </script>

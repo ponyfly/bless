@@ -1,12 +1,12 @@
 <template>
-  <div class="video-container">
-    <img class="theme-temp" src="../../static/img/video-temp.png" alt="">
-    <img class="card-title" src="../../static/img/card-title@2x.png" alt="">
-    <div class="video-common">
-      <img class="video-bg" src="../../static/img/video-01.png" alt="">
-      <div class="upload-video"></div>
+    <div class="video-container">
+      <img class="theme-temp" src="../../static/img/video-temp.png" alt="">
+      <img class="card-title" src="../../static/img/card-title@2x.png" alt="">
+      <div class="video-common">
+        <img class="video-bg" src="../../static/img/video-01.png" alt="">
+        <div class="upload-video"></div>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
